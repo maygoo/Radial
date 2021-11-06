@@ -1,6 +1,7 @@
 import antlr4
 from antlr.RadialParser import RadialParser
 from antlr.RadialLexer import RadialLexer
+from RadialIRBuilder import RadialIRBuilder
 from llvmlite import ir
 
 if __name__=="__main__":
@@ -13,17 +14,10 @@ if __name__=="__main__":
     tree = parser.program()
     
     print(tree.toStringTree(parser.ruleNames))
-    
-    # types
-    i32 = ir.IntType(32)
-    function_type = ir.FunctionType(i32, ())
 
-    # builder
+    # initialise ir builder
     module = ir.Module(input_file)
-    function = ir.Function(module, function_type, 'main')
-    block = function.append_basic_block('entry')
-    builder = ir.IRBuilder(block)
-    builder.add(i32(10), i32(20))
-    builder.ret_void()
 
+    # attempting to parse
+    visitor = RadialIRBuilder(module).visitProgram(tree)
     print(module)

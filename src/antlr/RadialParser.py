@@ -68,13 +68,11 @@ class RadialParser ( Parser ):
         def getRuleIndex(self):
             return RadialParser.RULE_program
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterProgram" ):
-                listener.enterProgram(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitProgram" ):
-                listener.exitProgram(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitProgram" ):
+                return visitor.visitProgram(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -125,13 +123,11 @@ class RadialParser ( Parser ):
                 return self.getTypedRuleContext(RadialParser.ExpressionContext,i)
 
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterAdd" ):
-                listener.enterAdd(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitAdd" ):
-                listener.exitAdd(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAdd" ):
+                return visitor.visitAdd(self)
+            else:
+                return visitor.visitChildren(self)
 
 
     class NumberContext(ExpressionContext):
@@ -143,13 +139,11 @@ class RadialParser ( Parser ):
         def NUMBER(self):
             return self.getToken(RadialParser.NUMBER, 0)
 
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterNumber" ):
-                listener.enterNumber(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitNumber" ):
-                listener.exitNumber(self)
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitNumber" ):
+                return visitor.visitNumber(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
