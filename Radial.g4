@@ -68,5 +68,5 @@ IF: 'if' ;
 
 WS: [ \t\r\n]+ -> skip ;
 LINE_COMMENT: '//' ~[\r\n]* -> skip ;
-BLOCK_COMMENT: '/*' .? '*/' -> skip ;
+BLOCK_COMMENT: '/*' .*? '*/' -> skip ;
 //TODO try moving comments to separate channel to preserve them in the ir
