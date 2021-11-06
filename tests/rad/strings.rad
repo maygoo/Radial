@@ -1,0 +1,4 @@
+'here is a string';
+"here is another";
+10+'string';
+' mixed " quotes "';

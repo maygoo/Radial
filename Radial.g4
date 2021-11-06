@@ -45,7 +45,7 @@ literal
 // lexer rules
 INT: [0-9]+ ;
 DEC: [0-9]+ '.' [0-9]*;
-STR: ('\'' .? '\'') | ('"' .? '"') ;
+STR: ('\'' .*? '\'') | ('"' .*? '"') ;
 LABEL: [a-zA-Z_]+ ;
 
 TYPE: ('int' | 'float' | 'str' | 'list' | 'void') ;

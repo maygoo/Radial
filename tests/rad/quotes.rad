@@ -1,0 +1,8 @@
+10+20;
+// test line quote test
+30+40 /* block quote? */+50;
+/*
+50-20;
+*/
+11+11;//test
+22+22;
