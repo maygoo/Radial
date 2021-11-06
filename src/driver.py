@@ -1,4 +1,5 @@
 import antlr4
+import os
 from antlr.RadialParser import RadialParser
 from antlr.RadialLexer import RadialLexer
 from RadialIRBuilder import RadialIRBuilder
@@ -6,18 +7,24 @@ from llvmlite import ir
 
 if __name__=="__main__":
     
-    input_file = 'input.rad'
+    test_dir = 'tests/rad'
+    for f in os.listdir(test_dir):
+        test_file = f'{test_dir}/{f}'
 
-    lexer = RadialLexer(antlr4.FileStream(input_file))
-    stream = antlr4.CommonTokenStream(lexer)
-    parser = RadialParser(stream)
-    tree = parser.program()
-    
-    print(tree.toStringTree(parser.ruleNames))
+        # antlr scanner and parser
+        lexer = RadialLexer(antlr4.FileStream(test_file))
+        stream = antlr4.CommonTokenStream(lexer)
+        parser = RadialParser(stream)
+        tree = parser.program()
+        
+        # print parse tree for input
+        print(tree.toStringTree(parser.ruleNames))
 
-    # initialise ir builder
-    module = ir.Module(input_file)
+        # create ir
+        module = ir.Module(f)
+        visitor = RadialIRBuilder(module).visitProgram(tree)
 
-    # attempting to parse
-    visitor = RadialIRBuilder(module).visitProgram(tree)
-    print(module)
+        # write llvm to file
+        # will break if name of file contains rad will fix later
+        with open(test_file.replace('rad','ll'), 'w') as out:
+            out.write(str(module))
