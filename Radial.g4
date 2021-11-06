@@ -7,10 +7,10 @@ program
     ;
 
 expression
-    : expression '+' expression 
-    | NUMBER
+    : expression '+' expression     # Add
+    | NUMBER                        # Number
     ;
 
 NUMBER: [0-9]+ ;
-
+WS: [ \t\r\n]+ -> skip ;
 // test grammar accepts positive integers added together

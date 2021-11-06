@@ -17,12 +17,21 @@ class RadialListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by RadialParser#expression.
-    def enterExpression(self, ctx:RadialParser.ExpressionContext):
+    # Enter a parse tree produced by RadialParser#Add.
+    def enterAdd(self, ctx:RadialParser.AddContext):
         pass
 
-    # Exit a parse tree produced by RadialParser#expression.
-    def exitExpression(self, ctx:RadialParser.ExpressionContext):
+    # Exit a parse tree produced by RadialParser#Add.
+    def exitAdd(self, ctx:RadialParser.AddContext):
+        pass
+
+
+    # Enter a parse tree produced by RadialParser#Number.
+    def enterNumber(self, ctx:RadialParser.NumberContext):
+        pass
+
+    # Exit a parse tree produced by RadialParser#Number.
+    def exitNumber(self, ctx:RadialParser.NumberContext):
         pass
 
 

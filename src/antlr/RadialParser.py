@@ -11,7 +11,7 @@ else:
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\4")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\5")
         buf.write("\24\4\2\t\2\4\3\t\3\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7")
         buf.write("\3\17\n\3\f\3\16\3\22\13\3\3\3\2\3\4\4\2\4\2\2\2\22\2")
         buf.write("\6\3\2\2\2\4\b\3\2\2\2\6\7\5\4\3\2\7\3\3\2\2\2\b\t\b\3")
@@ -33,7 +33,7 @@ class RadialParser ( Parser ):
 
     literalNames = [ "<INVALID>", "'+'" ]
 
-    symbolicNames = [ "<INVALID>", "<INVALID>", "NUMBER" ]
+    symbolicNames = [ "<INVALID>", "<INVALID>", "NUMBER", "WS" ]
 
     RULE_program = 0
     RULE_expression = 1
@@ -43,6 +43,7 @@ class RadialParser ( Parser ):
     EOF = Token.EOF
     T__0=1
     NUMBER=2
+    WS=3
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -102,8 +103,20 @@ class RadialParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def NUMBER(self):
-            return self.getToken(RadialParser.NUMBER, 0)
+
+        def getRuleIndex(self):
+            return RadialParser.RULE_expression
+
+     
+        def copyFrom(self, ctx:ParserRuleContext):
+            super().copyFrom(ctx)
+
+
+    class AddContext(ExpressionContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a RadialParser.ExpressionContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
 
         def expression(self, i:int=None):
             if i is None:
@@ -112,16 +125,31 @@ class RadialParser ( Parser ):
                 return self.getTypedRuleContext(RadialParser.ExpressionContext,i)
 
 
-        def getRuleIndex(self):
-            return RadialParser.RULE_expression
-
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterExpression" ):
-                listener.enterExpression(self)
+            if hasattr( listener, "enterAdd" ):
+                listener.enterAdd(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitExpression" ):
-                listener.exitExpression(self)
+            if hasattr( listener, "exitAdd" ):
+                listener.exitAdd(self)
+
+
+    class NumberContext(ExpressionContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a RadialParser.ExpressionContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def NUMBER(self):
+            return self.getToken(RadialParser.NUMBER, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterNumber" ):
+                listener.enterNumber(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitNumber" ):
+                listener.exitNumber(self)
 
 
 
@@ -134,6 +162,10 @@ class RadialParser ( Parser ):
         self.enterRecursionRule(localctx, 2, self.RULE_expression, _p)
         try:
             self.enterOuterAlt(localctx, 1)
+            localctx = RadialParser.NumberContext(self, localctx)
+            self._ctx = localctx
+            _prevctx = localctx
+
             self.state = 7
             self.match(RadialParser.NUMBER)
             self._ctx.stop = self._input.LT(-1)
@@ -145,7 +177,7 @@ class RadialParser ( Parser ):
                     if self._parseListeners is not None:
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
-                    localctx = RadialParser.ExpressionContext(self, _parentctx, _parentState)
+                    localctx = RadialParser.AddContext(self, RadialParser.ExpressionContext(self, _parentctx, _parentState))
                     self.pushNewRecursionContext(localctx, _startState, self.RULE_expression)
                     self.state = 9
                     if not self.precpred(self._ctx, 2):
