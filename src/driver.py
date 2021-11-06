@@ -11,14 +11,20 @@ if __name__=="__main__":
     for f in os.listdir(test_dir):
         test_file = f'{test_dir}/{f}'
 
+        print('Parsing', test_file)
+
         # antlr scanner and parser
         lexer = RadialLexer(antlr4.FileStream(test_file))
         stream = antlr4.CommonTokenStream(lexer)
         parser = RadialParser(stream)
         tree = parser.program()
-        
+
         # print parse tree for input
         print(tree.toStringTree(parser.ruleNames))
+
+        if parser.getNumberOfSyntaxErrors() > 0:
+            print('Encountered errors parsing. Unable to compile file.')
+            continue
 
         # create ir
         module = ir.Module(f)
