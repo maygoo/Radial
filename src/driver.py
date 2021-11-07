@@ -11,6 +11,7 @@ if __name__=="__main__":
     for f in os.listdir(test_dir):
         test_file = f'{test_dir}/{f}'
 
+        print()
         print('Parsing', test_file)
 
         # antlr scanner and parser
@@ -22,7 +23,7 @@ if __name__=="__main__":
         # print parse tree for input
         print(tree.toStringTree(parser.ruleNames))
 
-        if parser.getNumberOfSyntaxErrors() > 0:
+        if parser.getNumberOfSyntaxErrors():
             print('Encountered errors parsing. Unable to compile file.')
             continue
 

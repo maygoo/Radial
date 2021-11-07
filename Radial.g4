@@ -20,7 +20,7 @@ statement
 
 var_def
     : TYPE LABEL
-    | TYPE LABEL () expression
+    | TYPE LABEL EQUALS expression
     ;
 
 func_def
@@ -29,17 +29,28 @@ func_def
 
 // no need to unravel expressions for operator precedence (antlr4 book chp 14)
 expression
-    : LABEL LPAREN expression* RPAREN               # Call
-    | expression op=(MUL | DIV | MOD) expression    # Mul
-    | expression op=(ADD | SUB) expression          # Add
-    | literal                                       # Lit
-    | LABEL                                         # Var
+    : LABEL LPAREN expression* RPAREN        # Call
+    | expression operators_mul expression    # BinOp
+    | expression operators_add expression    # BinOp
+    | literal                                # Lit
+    | LABEL                                  # Var
+    ;
+
+operators_add
+    : ADD       # Add
+    | SUB       # Sub
+    ;
+
+operators_mul
+    : MUL       # Mul
+    | DIV       # Div
+    | MOD       # Mod
     ;
 
 literal
-    : INT   # Int
-    | DEC   # Dec
-    | STR   # Str
+    : INT       # Int
+    | DEC       # Dec
+    | STR       # Str
     ;
 
 // lexer rules

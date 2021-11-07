@@ -34,18 +34,8 @@ class RadialVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by RadialParser#Add.
-    def visitAdd(self, ctx:RadialParser.AddContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by RadialParser#Call.
     def visitCall(self, ctx:RadialParser.CallContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by RadialParser#Mul.
-    def visitMul(self, ctx:RadialParser.MulContext):
         return self.visitChildren(ctx)
 
 
@@ -56,6 +46,36 @@ class RadialVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by RadialParser#Var.
     def visitVar(self, ctx:RadialParser.VarContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RadialParser#BinOp.
+    def visitBinOp(self, ctx:RadialParser.BinOpContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RadialParser#Add.
+    def visitAdd(self, ctx:RadialParser.AddContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RadialParser#Sub.
+    def visitSub(self, ctx:RadialParser.SubContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RadialParser#Mul.
+    def visitMul(self, ctx:RadialParser.MulContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RadialParser#Div.
+    def visitDiv(self, ctx:RadialParser.DivContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by RadialParser#Mod.
+    def visitMod(self, ctx:RadialParser.ModContext):
         return self.visitChildren(ctx)
 
 

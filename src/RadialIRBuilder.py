@@ -18,11 +18,41 @@ class RadialIRBuilder(RadialVisitor):
     def visitProgram(self, ctx: RadialParser.ProgramContext):
         self.builder.ret(self.visitChildren(ctx))
 
-    def visitAdd(self, ctx: RadialParser.AddContext):
-        left = ctx.getChild(0)
-        right = ctx.getChild(2)
-        
-        return self.builder.add(self.visit(left), self.visit(right), 'adding')
+    def visitStatement(self, ctx: RadialParser.StatementContext):
+        # ignore the second child, which is just ';'
+        return self.visit(ctx.getChild(0))
 
-    def visitNumber(self, ctx: RadialParser.NumberContext):
+    # Expressions
+    def visitBinOp(self, ctx: RadialParser.BinOpContext):
+        left = self.visit(ctx.getChild(0))
+        right = self.visit(ctx.getChild(2))
+        op = self.visit(ctx.getChild(1))
+        return op(left, right)
+
+    # Operators
+    def visitAdd(self, ctx: RadialParser.AddContext):
+        return self.builder.add
+    
+    def visitSub(self, ctx: RadialParser.SubContext):
+        return self.builder.sub
+    
+    def visitMul(self, ctx: RadialParser.MulContext):
+        return self.builder.mul
+
+    def visitDiv(self, ctx: RadialParser.DivContext):
+        # unsigned int division
+        return self.builder.udiv
+
+    def visitMod(self, ctx: RadialParser.ModContext):
+        # unsigned
+        return self.builder.urem
+
+    # Literals
+    def visitInt(self, ctx: RadialParser.IntContext):
         return i32(ctx.getText())
+
+    def visitDec(self, ctx: RadialParser.DecContext):
+        pass #TODO
+
+    def visitStr(self, ctx: RadialParser.StrContext):
+        pass #TODO
